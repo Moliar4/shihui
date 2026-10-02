@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>拾回 · 校园失物招领</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1 class="logo">拾回</h1>
+      <a class="header-search" href="search.html">🔍 搜索物品</a>
+    </header>
+
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-type="">全部</button>
+      <button class="tab" data-type="lost">寻物</button>
+      <button class="tab" data-type="found">招领</button>
+    </div>
+
+    <main class="content" id="content">
+      <!-- TODO(B): 首页信息流 —— API.list({type}) 拉取进行中的条目，UI.itemCard 渲染；支持排序 -->
+      <div class="empty">加载中…</div>
+    </main>
+
+    <nav class="tabbar">
+      <a class="tabbar-item active" href="index.html"><span class="ico">🏠</span>首页</a>
+      <a class="tabbar-item" href="publish.html"><span class="ico">➕</span>发布</a>
+      <a class="tabbar-item" href="my.html"><span class="ico">👤</span>我的</a>
+    </nav>
+  </div>
+
+  <script src="js/core.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    // TODO(B): 首页逻辑（筛选 Tab 切换 + 信息流渲染）
+  </script>
+</body>
+</html>

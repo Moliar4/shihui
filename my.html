@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的发布 · 拾回</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1 class="logo">我的发布</h1>
+    </header>
+
+    <main class="content" id="content">
+      <!-- TODO(C): 我的发布 —— API.list({publisher: UI.uid(), status:'all'}) 渲染；标记已找到/已归还 -->
+      <div class="empty">
+        <div class="empty-ico">📭</div>
+        <div class="empty-title">还没有发布过</div>
+        <div class="empty-sub">发布第一条寻物或招领信息吧</div>
+      </div>
+    </main>
+
+    <nav class="tabbar">
+      <a class="tabbar-item" href="index.html"><span class="ico">🏠</span>首页</a>
+      <a class="tabbar-item" href="publish.html"><span class="ico">➕</span>发布</a>
+      <a class="tabbar-item active" href="my.html"><span class="ico">👤</span>我的</a>
+    </nav>
+  </div>
+
+  <script src="js/core.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    // TODO(C): 我的发布逻辑（标记已找到/已归还 → API.resolve）
+  </script>
+</body>
+</html>

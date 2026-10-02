@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>详情 · 拾回</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <a class="back" href="index.html">‹</a>
+      <span class="title">物品详情</span>
+    </header>
+
+    <main class="content" id="content">
+      <!-- TODO(B): 详情页 —— API.get(id) 渲染大图/类型/标题/地点时间/描述/联系方式（一键复制） -->
+      <div class="empty">加载中…</div>
+    </main>
+
+    <div class="action-bar" id="actionBar">
+      <!-- TODO(B): 「联系 TA」复制联系方式 + 收藏 + 分享 -->
+    </div>
+  </div>
+
+  <script src="js/core.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    // TODO(B): 详情逻辑（id 取自 UI.query('id')）
+  </script>
+</body>
+</html>

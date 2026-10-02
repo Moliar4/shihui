@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>搜索 · 拾回</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <a class="back" href="index.html">‹</a>
+      <input class="search-input" id="searchInput" type="text" placeholder="输入物品名称搜索" style="flex:1;border:none;border-radius:16px;padding:7px 14px;font:inherit;">
+      <button class="search-btn" id="searchBtn" style="color:#fff;font-size:15px;">搜索</button>
+    </header>
+
+    <main class="content" id="content">
+      <!-- TODO(B): 搜索页 —— 历史 / 热门搜索（无关键词时），结果列表（关键词高亮 + 空状态） -->
+      <div class="empty">
+        <div class="empty-ico">🔎</div>
+        <div class="empty-title">搜索物品</div>
+        <div class="empty-sub">按物品名称等关键词查找</div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/core.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    // TODO(B): 搜索逻辑（API.list({q}) + Core.highlight 高亮 + 历史/热门）
+  </script>
+</body>
+</html>
