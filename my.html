@@ -36,9 +36,7 @@
       </div>
     </div>
 
-    <div class="list" id="myList" style="margin-top:12px">
-      <!-- TODO(C): 我的发布 —— API.list({publisher:UI.uid(), status:'all'}) 渲染；标记已找到/已归还(API.resolve) -->
-    </div>
+    <div class="list" id="myList" style="margin-top:12px"></div>
 
     <nav class="tabbar">
       <a class="t" href="index.html"><span class="ic">⌂</span><span class="lb">首页</span></a>
@@ -53,7 +51,91 @@
 <script src="js/api.js"></script>
 <script src="js/ui.js"></script>
 <script>
-  // TODO(C): 我的发布逻辑 —— 统计、筛选、标记已找到/已归还、自动下架
+  // 我的发布：统计 + 筛选 + 标记已找到/已归还（自动下架）
+  (function () {
+    var listEl = document.getElementById('myList');
+    var seg = document.getElementById('mySeg');
+    var myUid = UI.uid();
+    var allItems = [];
+    var currentType = '';   // '' 全部 | 'lost' | 'found' | 'resolved'
+
+    function getFavs() { try { return JSON.parse(localStorage.getItem('favorites') || '[]'); } catch (e) { return []; } }
+
+    function load() {
+      // 本机发布的（publisher=uid）+ 种子里的示例数据（publisher=demo）
+      Promise.all([
+        API.list({ publisher: myUid, status: 'all' }),
+        API.list({ publisher: 'demo', status: 'all' })
+      ]).then(function (res) {
+        allItems = res[0].concat(res[1]);
+        renderStats();
+        renderList();
+      }).catch(function () {
+        listEl.innerHTML = '<div class="empty"><div class="empty-ico">⚠️</div><div class="empty-title">加载失败</div></div>';
+      });
+    }
+
+    function renderStats() {
+      document.getElementById('statPublish').textContent = allItems.length;
+      document.getElementById('statResolved').textContent = allItems.filter(function (it) { return it.status === 'resolved'; }).length;
+      document.getElementById('statFav').textContent = getFavs().length;
+    }
+
+    function myCard(item) {
+      var typeTag = item.type === 'lost' ? '<span class="tag lost">寻物</span>' : '<span class="tag found">招领</span>';
+      var secTag = item.status === 'resolved'
+        ? '<span class="tag cat">已解决</span>'
+        : '<span class="tag cat">' + Core.escapeHtml(item.category) + '</span>';
+      var action = item.status === 'resolved'
+        ? ''
+        : '<button class="resolve-btn" data-id="' + item.id + '" data-type="' + item.type + '">标记' + Core.resolvedLabel(item.type) + '</button>';
+      return (
+        '<div class="card">' +
+          '<div class="' + UI.thumbClass(item) + '">' + UI.categoryIcon(item.category) + '</div>' +
+          '<div class="body">' +
+            '<div class="top">' + typeTag + secTag + '</div>' +
+            '<h3>' + Core.escapeHtml(item.title) + '</h3>' +
+            '<div class="meta">' + Core.escapeHtml(item.location) + ' · ' + Core.escapeHtml(item.time) + '</div>' +
+          '</div>' +
+          action +
+        '</div>'
+      );
+    }
+
+    function renderList() {
+      var items = allItems.filter(function (it) {
+        if (currentType === 'lost' || currentType === 'found') return it.type === currentType;
+        if (currentType === 'resolved') return it.status === 'resolved';
+        return true;
+      });
+      if (!items.length) {
+        listEl.innerHTML = '<div class="empty"><div class="empty-ico">📭</div><div class="empty-title">暂无相关发布</div><div class="empty-sub">去发布第一条信息吧</div></div>';
+        return;
+      }
+      listEl.innerHTML = items.map(myCard).join('');
+      listEl.querySelectorAll('.resolve-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var id = btn.dataset.id;
+          var label = Core.resolvedLabel(btn.dataset.type);
+          API.resolve(id).then(function () {
+            UI.toast('已标记为「' + label + '」');
+            load();
+          }).catch(function (e) { UI.toast(e.message); });
+        });
+      });
+    }
+
+    seg.querySelectorAll('button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        seg.querySelectorAll('button').forEach(function (x) { x.classList.remove('on'); });
+        b.classList.add('on');
+        currentType = b.dataset.type || '';
+        renderList();
+      });
+    });
+
+    load();
+  })();
 </script>
 </body>
 </html>

@@ -30,6 +30,7 @@
 
       <div class="field"><label>物品名称 <em>*</em></label>
         <input class="inp" name="title" placeholder="如：校园卡、宿舍钥匙">
+        <span class="errmsg" id="err-title"></span>
       </div>
 
       <div class="field"><label>物品分类 <em>*</em></label>
@@ -49,6 +50,7 @@
           <input class="inp" name="location" placeholder="如：三教 201">
           <input class="inp" name="time" placeholder="如：10-02 09:30">
         </div>
+        <span class="errmsg" id="err-loc"></span>
       </div>
 
       <div class="field"><label>详细描述 <span style="color:var(--faint);font-weight:400">（选填）</span></label>
@@ -57,6 +59,7 @@
 
       <div class="field"><label>联系方式 <em>*</em></label>
         <input class="inp" name="contact" placeholder="微信号 / 手机号（仅详情页可见）">
+        <span class="errmsg" id="err-contact"></span>
       </div>
 
       <button type="submit" class="submit">立即发布</button>
@@ -78,7 +81,79 @@
 <script src="js/api.js"></script>
 <script src="js/ui.js"></script>
 <script>
-  // TODO(C): 发布逻辑 —— 收集表单 → Core.validatePublish 前端校验 → API.publish → 弹成功层
+  // 发布页：类型/分类选择 + 前端校验 + 提交 + 成功弹层
+  (function () {
+    var form = document.getElementById('publishForm');
+    var typeSwitch = document.getElementById('typeSwitch');
+    var categoryChips = document.getElementById('categoryChips');
+    var overlay = document.getElementById('successOverlay');
+    var selectedType = 'lost';
+    var selectedCategory = '证件卡类';
+
+    typeSwitch.querySelectorAll('button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        typeSwitch.querySelectorAll('button').forEach(function (x) { x.classList.remove('on'); });
+        b.classList.add('on');
+        selectedType = b.dataset.type;
+      });
+    });
+
+    categoryChips.querySelectorAll('button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        categoryChips.querySelectorAll('button').forEach(function (x) { x.classList.remove('on'); });
+        b.classList.add('on');
+        selectedCategory = b.dataset.cat;
+      });
+    });
+
+    document.getElementById('uploadBtn').addEventListener('click', function () {
+      UI.toast('照片为选填项，本演示暂不实现上传');
+    });
+
+    function clearErrors() {
+      form.querySelectorAll('.inp.error').forEach(function (x) { x.classList.remove('error'); });
+      form.querySelectorAll('.errmsg').forEach(function (x) { x.textContent = ''; });
+    }
+
+    function mark(name, slotId, msg) {
+      var input = form.querySelector('[name="' + name + '"]');
+      if (input) input.classList.add('error');
+      var slot = document.getElementById(slotId);
+      if (slot) slot.textContent = msg;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      clearErrors();
+      var data = {
+        type: selectedType,
+        title: form.title.value,
+        category: selectedCategory,
+        location: form.location.value,
+        time: form.time.value,
+        description: form.description.value,
+        contact: form.contact.value,
+        publisher: UI.uid()
+      };
+      var v = Core.validatePublish(data);
+      if (!v.ok) {
+        if (v.errors.title) mark('title', 'err-title', v.errors.title);
+        if (v.errors.location || v.errors.time) { mark('location', 'err-loc', '请填写地点和时间'); mark('time', 'err-loc', '请填写地点和时间'); }
+        if (v.errors.contact) mark('contact', 'err-contact', v.errors.contact);
+        if (v.errors.type) UI.toast(v.errors.type);
+        if (v.errors.category) UI.toast(v.errors.category);
+        return;
+      }
+      API.publish(data).then(function () {
+        overlay.classList.add('on');
+      }).catch(function (err) {
+        UI.toast(err.message || '发布失败');
+      });
+    });
+
+    document.getElementById('goMy').addEventListener('click', function () { location.href = 'my.html'; });
+    document.getElementById('goHome').addEventListener('click', function () { location.href = 'index.html'; });
+  })();
 </script>
 </body>
 </html>
