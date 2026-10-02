@@ -31,7 +31,6 @@
 
     <div class="filters">
       <span class="chip on" data-sort="newest">最新发布</span>
-      <span class="chip" data-sort="hot">失物较多</span>
       <span class="sort">⌄</span>
     </div>
 
@@ -53,7 +52,38 @@
 <script src="js/api.js"></script>
 <script src="js/ui.js"></script>
 <script>
-  // TODO(B): 首页逻辑 —— 筛选 Tab 切换、排序切换、信息流渲染（UI.itemCard）
+  // 首页逻辑：筛选 Tab 切换 + 信息流渲染
+  (function () {
+    var listEl = document.getElementById('list');
+    var typeSeg = document.getElementById('typeSeg');
+    var currentType = '';   // '' 全部 | 'lost' 寻物 | 'found' 招领
+
+    function render() {
+      listEl.innerHTML = '<div class="empty"><div class="empty-ico">🍀</div><div class="empty-title">加载中…</div></div>';
+      API.list({ type: currentType, sort: 'newest' })
+        .then(function (items) {
+          if (!items.length) {
+            listEl.innerHTML = '<div class="empty"><div class="empty-ico">🍀</div><div class="empty-title">暂无相关信息</div><div class="empty-sub">发布一条寻物或招领信息吧</div></div>';
+            return;
+          }
+          listEl.innerHTML = items.map(UI.itemCard).join('');
+        })
+        .catch(function (e) {
+          listEl.innerHTML = '<div class="empty"><div class="empty-ico">⚠️</div><div class="empty-title">加载失败</div><div class="empty-sub">' + Core.escapeHtml(e.message) + '</div></div>';
+        });
+    }
+
+    typeSeg.querySelectorAll('button').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        typeSeg.querySelectorAll('button').forEach(function (b) { b.classList.remove('on'); });
+        btn.classList.add('on');
+        currentType = btn.dataset.type || '';
+        render();
+      });
+    });
+
+    render();
+  })();
 </script>
 </body>
 </html>
