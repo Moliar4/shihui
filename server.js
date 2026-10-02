@@ -154,6 +154,8 @@ function handleApi(req, res, pathname, query) {
         image: String(body.image == null ? '' : body.image),
         status: 'active',
         publisher: String(body.publisher == null ? '' : body.publisher),
+        publisherName: String(body.publisherName == null ? '' : body.publisherName).trim(),
+        dept: String(body.dept == null ? '' : body.dept).trim(),
         createdAt: Date.now()
       };
       items.unshift(item);
