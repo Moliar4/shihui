@@ -22,17 +22,12 @@
       <span class="clr" id="searchClear">✕</span>
     </div>
 
-    <!-- 无关键词：搜索历史 + 热门搜索；有关键词：结果列表（B 在此切换渲染） -->
-    <div id="searchDefault">
+    <div id="searchDefault" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
       <div class="block"><h4>搜索历史 <button id="clearHistory">清空</button></h4>
-        <div class="chips" id="historyChips">
-          <!-- TODO(B): 搜索历史 chips -->
-        </div>
+        <div class="chips" id="historyChips"></div>
       </div>
       <div class="block"><h4>热门搜索</h4></div>
-      <div class="hot" id="hotList">
-        <!-- TODO(B): 热门搜索列表 -->
-      </div>
+      <div class="hot" id="hotList"></div>
     </div>
 
     <div id="searchResult" style="display:none;flex:1;flex-direction:column;overflow:hidden">
@@ -46,7 +41,71 @@
 <script src="js/api.js"></script>
 <script src="js/ui.js"></script>
 <script>
-  // TODO(B): 搜索逻辑 —— API.list({q}) + Core.highlight 高亮 + 空状态；搜索历史/热门(localStorage)
+  // 搜索页：关键词搜索 + 高亮 + 历史/热门 + 空状态
+  (function () {
+    var input = document.getElementById('searchInput');
+    var defaultEl = document.getElementById('searchDefault');
+    var resultEl = document.getElementById('searchResult');
+    var historyChips = document.getElementById('historyChips');
+    var hotList = document.getElementById('hotList');
+    var resultMeta = document.getElementById('resultMeta');
+    var resultList = document.getElementById('resultList');
+
+    var HOT = ['校园卡', '宿舍钥匙', '雨伞', '蓝牙耳机', '水杯'];
+
+    function getHistory() { try { return JSON.parse(localStorage.getItem('searchHistory') || '[]'); } catch (e) { return []; } }
+    function setHistory(a) { localStorage.setItem('searchHistory', JSON.stringify(a)); }
+
+    function renderDefault() {
+      var h = getHistory();
+      historyChips.innerHTML = h.length
+        ? h.map(function (k) { return '<button class="c" data-kw="' + Core.escapeHtml(k) + '">' + Core.escapeHtml(k) + '</button>'; }).join('')
+        : '<span style="font-size:12px;color:var(--faint)">暂无搜索历史</span>';
+      hotList.innerHTML = HOT.map(function (k, i) {
+        var heat = i < 2 ? '<span class="heat">热</span>' : '';
+        return '<div class="h" data-kw="' + Core.escapeHtml(k) + '"><span class="rk">' + (i + 1) + '</span><span class="nm">' + Core.escapeHtml(k) + '</span>' + heat + '<span class="act">搜索</span></div>';
+      }).join('');
+      historyChips.querySelectorAll('.c').forEach(function (b) { b.addEventListener('click', function () { doSearch(b.dataset.kw); }); });
+      hotList.querySelectorAll('.h').forEach(function (h) { h.addEventListener('click', function () { doSearch(h.dataset.kw); }); });
+    }
+
+    function doSearch(kw) {
+      kw = String(kw || '').trim();
+      if (!kw) return;
+      input.value = kw;
+      var h = getHistory().filter(function (k) { return k !== kw; });
+      h.unshift(kw);
+      setHistory(h.slice(0, 10));
+
+      defaultEl.style.display = 'none';
+      resultEl.style.display = 'flex';
+      resultList.innerHTML = '<div class="empty"><div class="empty-ico">🔍</div><div class="empty-title">搜索中…</div></div>';
+
+      API.list({ q: kw }).then(function (items) {
+        resultMeta.innerHTML = '找到 <b>' + items.length + '</b> 条相关信息';
+        if (!items.length) {
+          resultList.innerHTML = '<div class="empty"><div class="empty-ico">🔍</div><div class="empty-title">未找到相关信息</div><div class="empty-sub">换个关键词试试，如「校园卡」「钥匙」</div></div>';
+          return;
+        }
+        resultList.innerHTML = items.map(function (it) { return UI.itemCard(it, kw); }).join('');
+      }).catch(function () {
+        resultList.innerHTML = '<div class="empty"><div class="empty-ico">⚠️</div><div class="empty-title">搜索失败</div></div>';
+      });
+    }
+
+    function showDefault() {
+      input.value = '';
+      defaultEl.style.display = '';
+      resultEl.style.display = 'none';
+      renderDefault();
+    }
+
+    input.addEventListener('keydown', function (e) { if (e.key === 'Enter') doSearch(input.value); });
+    document.getElementById('searchClear').addEventListener('click', showDefault);
+    document.getElementById('clearHistory').addEventListener('click', function () { setHistory([]); renderDefault(); });
+
+    renderDefault();
+  })();
 </script>
 </body>
 </html>

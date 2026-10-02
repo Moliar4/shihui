@@ -26,7 +26,7 @@
   }
 
   // 渲染一条信息卡片（首页 / 搜索 / 我的 通用）
-  function itemCard(item) {
+  function itemCard(item, keyword) {
     const tagCls = item.status === 'resolved' ? 'tag cat' : (item.type === 'lost' ? 'tag lost' : 'tag found');
     const tagText = statusLabel(item);
     const catTag = item.status === 'resolved'
@@ -40,7 +40,7 @@
         '<div class="' + thumbClass(item) + '">' + categoryIcon(item.category) + '</div>' +
         '<div class="body">' +
           '<div class="top"><span class="' + tagCls + '">' + tagText + '</span>' + catTag + '</div>' +
-          '<h3>' + Core.escapeHtml(item.title) + '</h3>' +
+          '<h3>' + (keyword ? Core.highlight(item.title, keyword) : Core.escapeHtml(item.title)) + '</h3>' +
           '<div class="meta">' + Core.escapeHtml(item.location) + ' · ' + Core.escapeHtml(item.time) + who + '</div>' +
         '</div>' +
       '</a>'
