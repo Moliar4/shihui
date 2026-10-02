@@ -1,0 +1,300 @@
+/* style.css —— 校园失物招领「拾回」公共样式（设计规范）
+ * 主色：微信绿 #07C160；寻物橙 #FF8F1F；错误红 #FA5151
+ * 画布：375px 手机竖屏居中；卡片圆角 12px，按钮圆角 24px
+ */
+
+:root {
+  --green: #07C160;
+  --green-dark: #06AD56;
+  --green-light: #E8F8EF;
+  --orange: #FF8F1F;
+  --orange-light: #FFF3E6;
+  --red: #FA5151;
+  --t1: #1A1A1A;
+  --t2: #666666;
+  --t3: #999999;
+  --t4: #C4C4C4;
+  --line: #EFEFEF;
+  --bg: #F5F6F8;
+  --white: #FFFFFF;
+  --radius: 12px;
+  --radius-btn: 24px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+
+body {
+  font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  background: #E9EBEE;
+  color: var(--t1);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+
+a { text-decoration: none; color: inherit; }
+button { font: inherit; cursor: pointer; border: none; background: none; }
+img { display: block; max-width: 100%; }
+
+/* ---------- 手机容器 ---------- */
+.app {
+  width: 375px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 24px rgba(0, 0, 0, .08);
+}
+
+/* ---------- 顶栏 ---------- */
+.header {
+  background: var(--green);
+  color: #fff;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 0 0 auto;
+}
+.header .back { color: #fff; font-size: 20px; line-height: 1; }
+.header .logo { font-size: 20px; font-weight: 600; letter-spacing: 1px; }
+.header .title { font-size: 17px; font-weight: 600; }
+.header-search {
+  margin-left: auto;
+  color: #fff;
+  background: rgba(255, 255, 255, .18);
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 13px;
+}
+
+/* ---------- 内容区 ---------- */
+.content {
+  flex: 1 1 auto;
+  padding: 12px 16px 24px;
+  overflow-y: auto;
+}
+
+/* ---------- 筛选标签 ---------- */
+.tabs {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px 0;
+  background: var(--bg);
+}
+.tab {
+  padding: 6px 18px;
+  border-radius: 18px;
+  font-size: 14px;
+  color: var(--t2);
+  background: var(--white);
+}
+.tab.active { background: var(--green); color: #fff; font-weight: 600; }
+
+/* ---------- 信息卡片 ---------- */
+.card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+}
+.card-ico {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--green-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  flex: 0 0 auto;
+}
+.card-body { flex: 1 1 auto; min-width: 0; }
+.card-title {
+  font-size: 15px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.card-meta { font-size: 12px; color: var(--t3); margin-top: 4px; }
+
+/* ---------- 徽章 ---------- */
+.badge {
+  flex: 0 0 auto;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+.badge.found { color: var(--green-dark); background: var(--green-light); }
+.badge.lost { color: var(--orange); background: var(--orange-light); }
+.badge.resolved { color: var(--t3); background: #F0F1F3; }
+
+/* ---------- 按钮 ---------- */
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: var(--radius-btn);
+  font-size: 14px;
+  text-align: center;
+}
+.btn-primary { background: var(--green); color: #fff; }
+.btn-primary:active { background: var(--green-dark); }
+.btn-block { display: block; width: 100%; }
+.btn-ghost { background: var(--white); color: var(--green); border: 1px solid var(--green); }
+
+/* ---------- 表单 ---------- */
+.form { background: var(--white); border-radius: var(--radius); padding: 16px; }
+.field { margin-bottom: 16px; }
+.field label { display: block; font-size: 14px; color: var(--t2); margin-bottom: 6px; }
+.field .req { color: var(--red); }
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 14px;
+  background: #FAFBFC;
+  color: var(--t1);
+}
+.field input:focus,
+.field textarea:focus,
+.field select:focus { outline: none; border-color: var(--green); background: #fff; }
+.field textarea { min-height: 72px; resize: vertical; }
+.field.invalid input,
+.field.invalid textarea,
+.field.invalid select { border-color: var(--red); background: #FFF6F6; }
+.field .err-msg { color: var(--red); font-size: 12px; margin-top: 4px; }
+
+/* 寻物/招领切换 */
+.type-switch { display: flex; gap: 8px; }
+.type-switch button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  border: 1px solid var(--line);
+  color: var(--t2);
+  background: #FAFBFC;
+}
+.type-switch button.on.lost { background: var(--orange-light); border-color: var(--orange); color: var(--orange); }
+.type-switch button.on.found { background: var(--green-light); border-color: var(--green); color: var(--green-dark); }
+
+/* 分类 chips */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: 13px;
+  background: #FAFBFC;
+  border: 1px solid var(--line);
+  color: var(--t2);
+}
+.chip.on { background: var(--green-light); border-color: var(--green); color: var(--green-dark); }
+
+/* ---------- 详情页 ---------- */
+.detail-ico {
+  width: 100%;
+  height: 180px;
+  border-radius: var(--radius);
+  background: var(--green-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 80px;
+}
+.detail-title { font-size: 20px; font-weight: 600; margin: 16px 0 4px; }
+.detail-tags { margin: 8px 0 16px; }
+.detail-section {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.detail-section h3 { font-size: 13px; color: var(--t3); margin-bottom: 8px; font-weight: 500; }
+.detail-section p { font-size: 14px; }
+.contact-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.contact-row .contact-text { flex: 1; font-size: 15px; word-break: break-all; }
+.copy-btn {
+  flex: 0 0 auto;
+  background: var(--green-light);
+  color: var(--green-dark);
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: 13px;
+}
+.action-bar {
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--white);
+  border-top: 1px solid var(--line);
+}
+.action-bar .btn { flex: 1; }
+
+/* ---------- 空状态 ---------- */
+.empty { text-align: center; color: var(--t3); padding: 60px 20px; }
+.empty .empty-ico { font-size: 56px; margin-bottom: 12px; }
+.empty .empty-title { font-size: 15px; color: var(--t2); margin-bottom: 6px; }
+.empty .empty-sub { font-size: 13px; }
+
+/* ---------- 搜索高亮 ---------- */
+mark { background: #FFF3B0; color: inherit; padding: 0 1px; border-radius: 2px; }
+
+/* ---------- 搜索历史 / 热门 ---------- */
+.search-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.search-tag {
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: 13px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  color: var(--t2);
+}
+.search-tag.hot { color: var(--orange); }
+
+/* ---------- 底部导航 ---------- */
+.tabbar {
+  display: flex;
+  background: var(--white);
+  border-top: 1px solid var(--line);
+  flex: 0 0 auto;
+}
+.tabbar-item {
+  flex: 1;
+  text-align: center;
+  padding: 8px 0 10px;
+  font-size: 12px;
+  color: var(--t3);
+}
+.tabbar-item .ico { display: block; font-size: 20px; }
+.tabbar-item.active { color: var(--green); font-weight: 600; }
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 90px;
+  transform: translateX(-50%) translateY(8px);
+  background: rgba(0, 0, 0, .82);
+  color: #fff;
+  font-size: 13px;
+  padding: 9px 16px;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: .22s;
+  z-index: 999;
+  max-width: 320px;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
