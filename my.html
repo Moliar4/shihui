@@ -1,38 +1,59 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>我的发布 · 拾回</title>
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>我的发布 · 拾回</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=ZCOOL+QingKe+HuangYou&display=swap">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="app">
-    <header class="header">
-      <h1 class="logo">我的发布</h1>
-    </header>
+<div class="stage">
+  <div class="phone">
+    <div class="statusbar"><span>9:41</span><span class="dot"></span></div>
 
-    <main class="content" id="content">
-      <!-- TODO(C): 我的发布 —— API.list({publisher: UI.uid(), status:'all'}) 渲染；标记已找到/已归还 -->
-      <div class="empty">
-        <div class="empty-ico">📭</div>
-        <div class="empty-title">还没有发布过</div>
-        <div class="empty-sub">发布第一条寻物或招领信息吧</div>
+    <div class="navbar"><div class="sp"></div><div class="title">我的发布</div><div class="sp"></div></div>
+
+    <div class="mehead">
+      <div class="av" id="myAv">拾</div>
+      <div><div class="nm" id="myName">匿名用户</div><div class="sc" id="mySub">本机发布 · 校园失物招领</div></div>
+    </div>
+
+    <div class="stats">
+      <div class="s"><b id="statPublish">0</b><span>我发布的</span></div>
+      <div class="s"><b id="statResolved">0</b><span>已解决</span></div>
+      <div class="s"><b id="statFav">0</b><span>我的收藏</span></div>
+    </div>
+
+    <div style="padding:2px 16px 0">
+      <div class="seg" id="mySeg">
+        <button class="on" data-type="">全部</button>
+        <button data-type="lost">寻物</button>
+        <button data-type="found">招领</button>
+        <button data-type="resolved">已解决</button>
       </div>
-    </main>
+    </div>
+
+    <div class="list" id="myList" style="margin-top:12px">
+      <!-- TODO(C): 我的发布 —— API.list({publisher:UI.uid(), status:'all'}) 渲染；标记已找到/已归还(API.resolve) -->
+    </div>
 
     <nav class="tabbar">
-      <a class="tabbar-item" href="index.html"><span class="ico">🏠</span>首页</a>
-      <a class="tabbar-item" href="publish.html"><span class="ico">➕</span>发布</a>
-      <a class="tabbar-item active" href="my.html"><span class="ico">👤</span>我的</a>
+      <a class="t" href="index.html"><span class="ic">⌂</span><span class="lb">首页</span></a>
+      <a class="t" href="search.html"><span class="ic">⌕</span><span class="lb">搜索</span></a>
+      <a class="fab" href="publish.html">＋</a>
+      <a class="t on" href="my.html"><span class="ic">◉</span><span class="lb">我的</span></a>
     </nav>
   </div>
+</div>
 
-  <script src="js/core.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/ui.js"></script>
-  <script>
-    // TODO(C): 我的发布逻辑（标记已找到/已归还 → API.resolve）
-  </script>
+<script src="js/core.js"></script>
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  // TODO(C): 我的发布逻辑 —— 统计、筛选、标记已找到/已归还、自动下架
+</script>
 </body>
 </html>

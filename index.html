@@ -1,41 +1,59 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>拾回 · 校园失物招领</title>
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>首页 · 拾回</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=ZCOOL+QingKe+HuangYou&display=swap">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="app">
-    <header class="header">
-      <h1 class="logo">拾回</h1>
-      <a class="header-search" href="search.html">🔍 搜索物品</a>
-    </header>
+<div class="stage">
+  <div class="phone">
+    <div class="statusbar"><span>9:41</span><span class="dot"></span></div>
 
-    <div class="tabs" id="tabs">
-      <button class="tab active" data-type="">全部</button>
-      <button class="tab" data-type="lost">寻物</button>
-      <button class="tab" data-type="found">招领</button>
+    <div class="homehead">
+      <div class="logo">🍀</div>
+      <div><div class="hname">拾回</div><div class="hsub">校园失物招领</div></div>
     </div>
 
-    <main class="content" id="content">
-      <!-- TODO(B): 首页信息流 —— API.list({type}) 拉取进行中的条目，UI.itemCard 渲染；支持排序 -->
-      <div class="empty">加载中…</div>
-    </main>
+    <a class="searchbar" href="search.html"><span class="g"></span><span>搜索物品，如 校园卡、钥匙</span></a>
+
+    <div style="padding:2px 16px 0">
+      <div class="seg" id="typeSeg">
+        <button class="on" data-type="">全部</button>
+        <button data-type="lost">寻物</button>
+        <button data-type="found">招领</button>
+      </div>
+    </div>
+
+    <div class="filters">
+      <span class="chip on" data-sort="newest">最新发布</span>
+      <span class="chip" data-sort="hot">失物较多</span>
+      <span class="sort">⌄</span>
+    </div>
+
+    <div class="list" id="list">
+      <!-- TODO(B): 首页信息流 —— API.list({type, sort}) 拉取进行中条目，UI.itemCard 渲染 -->
+      <div class="empty"><div class="empty-ico">🍀</div><div class="empty-title">加载中…</div></div>
+    </div>
 
     <nav class="tabbar">
-      <a class="tabbar-item active" href="index.html"><span class="ico">🏠</span>首页</a>
-      <a class="tabbar-item" href="publish.html"><span class="ico">➕</span>发布</a>
-      <a class="tabbar-item" href="my.html"><span class="ico">👤</span>我的</a>
+      <a class="t on" href="index.html"><span class="ic">⌂</span><span class="lb">首页</span></a>
+      <a class="t" href="search.html"><span class="ic">⌕</span><span class="lb">搜索</span></a>
+      <a class="fab" href="publish.html">＋</a>
+      <a class="t" href="my.html"><span class="ic">◉</span><span class="lb">我的</span></a>
     </nav>
   </div>
+</div>
 
-  <script src="js/core.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/ui.js"></script>
-  <script>
-    // TODO(B): 首页逻辑（筛选 Tab 切换 + 信息流渲染）
-  </script>
+<script src="js/core.js"></script>
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  // TODO(B): 首页逻辑 —— 筛选 Tab 切换、排序切换、信息流渲染（UI.itemCard）
+</script>
 </body>
 </html>
